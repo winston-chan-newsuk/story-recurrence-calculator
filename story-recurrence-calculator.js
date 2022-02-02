@@ -27,10 +27,11 @@ const customRecurrence = (momentDate, data) => {
     }
     return arr;
   } else if (customData.repeatEveryOccasion === 'MONTH') {
+    const maxValue = customData.repeatEveryValue > MAX_STORIES ? MAX_STORIES : customData.repeatEveryValue;
     if (customData.repeatOnEveryMonth === 'SPECIFIC_WEEKDAY') {
       const weeks = weekOfMonth(arr[arr.length - 1]);
       const weekday = moment(arr[arr.length - 1]).day();
-      for (let i = 0; i < customData.repeatEveryValue; i++) {
+      for (let i = 1; i < maxValue; i++) {
         let nextMonthDate = moment(arr[arr.length - 1]).add(1, 'month')
                                                        .startOf('month');                      
         let addWeeksToDate = moment(nextMonthDate).add(weeks, 'week');
@@ -50,7 +51,7 @@ const customRecurrence = (momentDate, data) => {
         arr.push(nextMonthDate);
       }
     } else if (customData.repeatOnEveryMonth === 'SPECIFIC_DAY') {
-      for (let i = 0; i < customData.repeatEveryValue; i++) {
+      for (let i = 1; i < maxValue; i++) {
         const nextMonthDate = moment(arr[arr.length - 1]).add(1, 'month');
         arr.push(nextMonthDate);
       }
