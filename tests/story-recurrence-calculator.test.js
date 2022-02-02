@@ -9,7 +9,7 @@ describe('story-recurrence-calculator', () => {
       scheduleType: 'DAILY'
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-05-26',
       '2022-05-27',
       '2022-05-28',
@@ -20,9 +20,7 @@ describe('story-recurrence-calculator', () => {
       '2022-06-02',
       '2022-06-03',
       '2022-06-04'
-    ];
-
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+    ]);
   });
 
   it('daily recurrence with end date', () => {
@@ -31,7 +29,7 @@ describe('story-recurrence-calculator', () => {
       endDate: '2022-06-01'
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-05-26',
       '2022-05-27',
       '2022-05-28',
@@ -39,9 +37,7 @@ describe('story-recurrence-calculator', () => {
       '2022-05-30',
       '2022-05-31',
       '2022-06-01'
-    ];
-
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+    ]);
   });
 
   it('weekly recurrence', () => {
@@ -49,7 +45,7 @@ describe('story-recurrence-calculator', () => {
       scheduleType: 'WEEKLY'
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-05-26',
       '2022-06-02',
       '2022-06-09',
@@ -60,9 +56,7 @@ describe('story-recurrence-calculator', () => {
       '2022-07-14',
       '2022-07-21',
       '2022-07-28'
-    ];
-
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+    ]);
   });
 
   it('weekly recurrence with end date', () => {
@@ -71,51 +65,65 @@ describe('story-recurrence-calculator', () => {
       endDate: '2022-07-01'
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-05-26',
       '2022-06-02',
       '2022-06-09',
       '2022-06-16',
       '2022-06-23',
       '2022-06-30'
-    ];
-
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+    ]);
   });
 
   it('monthly recurrence', () => {
     const result = getRecurrenceDates('2022-05-26', {
       scheduleType: 'MONTHLY'
     });
-  
-    const datesArr = [
+
+    expect(formattedDates(result)).to.deep.equal([
       '2022-05-26',
-      '2022-06-25',
-      '2022-07-25',
-      '2022-08-24',
-      '2022-09-23',
-      '2022-10-23',
-      '2022-11-22',
-      '2022-12-22',
-      '2023-01-21',
-      '2023-02-20'
-    ];
-  
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+      '2022-06-26',
+      '2022-07-26',
+      '2022-08-26',
+      '2022-09-26',
+      '2022-10-26',
+      '2022-11-26',
+      '2022-12-26',
+      '2023-01-26',
+      '2023-02-26'
+    ]);
   });
 
-  it('monthly recurrence with end date', () => {
+  it('monthly recurrence with end date - case 1', () => {
     const result = getRecurrenceDates('2022-05-26', {
       scheduleType: 'MONTHLY',
       endDate: '2022-07-01'
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-05-26',
-      '2022-06-25'
-    ];
+      '2022-06-26'
+    ]);
+  });
 
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+  it('monthly recurrence with end date - case 2', () => {
+    // At the end of the month
+    const result = getRecurrenceDates('2022-01-31', {
+      scheduleType: 'MONTHLY'
+    });
+
+    expect(formattedDates(result)).to.deep.equal([
+      '2022-01-31',
+      '2022-02-28',
+      '2022-03-31',
+      '2022-04-30',
+      '2022-05-31',
+      '2022-06-30',
+      '2022-07-31',
+      '2022-08-31',
+      '2022-09-30',
+      '2022-10-31',
+    ]);
   });
 
   it('custom recurrence scheduled on specific week days - case 1', () => {
@@ -128,7 +136,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-05-26',
       '2022-05-29',
       '2022-05-31',
@@ -136,9 +144,7 @@ describe('story-recurrence-calculator', () => {
       '2022-06-05',
       '2022-06-07',
       '2022-06-09'
-    ];
-
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+    ]);
   });
 
   it('custom recurrence scheduled on specific week days - case 2', () => {
@@ -151,7 +157,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-05-26',
       '2022-05-30',
       '2022-06-02',
@@ -162,9 +168,7 @@ describe('story-recurrence-calculator', () => {
       '2022-06-10',
       '2022-06-11',
       '2022-06-13'
-    ];
-
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+    ]);
   });
 
   it('custom recurrence scheduled on every month on specific weekday - case 1', () => {
@@ -177,7 +181,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-06-15',
       '2022-07-20',
       '2022-08-24',
@@ -188,9 +192,7 @@ describe('story-recurrence-calculator', () => {
       '2023-01-25',
       '2023-02-22',
       '2023-03-22'
-    ];
-
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+    ]);
   });
 
   it('custom recurrence scheduled on every month on specific weekday - case 2', () => {
@@ -204,7 +206,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-06-01',
       '2022-07-06',
       '2022-08-03',
@@ -215,9 +217,7 @@ describe('story-recurrence-calculator', () => {
       '2023-01-04',
       '2023-02-01',
       '2023-03-01'
-    ];
-
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+    ]);
   });
 
   it('custom recurrence scheduled on every month on specific weekday - case 3', () => {
@@ -231,7 +231,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    const datesArr = [
+    expect(formattedDates(result)).to.deep.equal([
       '2022-06-30',
       '2022-07-28',
       '2022-08-25',
@@ -242,8 +242,6 @@ describe('story-recurrence-calculator', () => {
       '2023-01-26',
       '2023-02-23',
       '2023-03-30'
-    ];
-
-    expect(formattedDates(result)).to.deep.equal(datesArr);
+    ]);
   });
 });

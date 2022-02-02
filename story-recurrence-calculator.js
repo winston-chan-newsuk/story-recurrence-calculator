@@ -62,7 +62,7 @@ const customRecurrence = (momentDate, data) => {
   return null;
 };
 
-const nextPublishDate = (momentDate, data) => {
+const nextPublishDate = (momentDate, data, firstDate) => {
   let newDate;
   switch (data.scheduleType) {
     case 'DAILY':
@@ -72,7 +72,13 @@ const nextPublishDate = (momentDate, data) => {
       newDate = moment(momentDate).add(1, 'week');
       break;
     case 'MONTHLY':
-      newDate = moment(momentDate).add(30, 'days');
+      const daysOfFirstDate = firstDate.date();
+      newDate = moment(momentDate).add(1, 'month');
+      if (daysOfFirstDate > newDate.daysInMonth()) {
+        newDate = newDate.date(newDate.daysInMonth());
+      } else {
+        newDate = newDate.date(daysOfFirstDate);
+      }
       break;
   }
 
@@ -84,12 +90,12 @@ const nextPublishDate = (momentDate, data) => {
 };
 
 const getRecurrenceDates = (dateStr, data) => {
-  const firstPublishDate = moment(dateStr);
-  let arr = [firstPublishDate];
+  const firstDate = moment(dateStr);
+  let arr = [firstDate];
 
   if (data.scheduleType !== 'CUSTOM') {
     for (let i = 1; i < MAX_STORIES; i++) {
-      const nextDate = nextPublishDate(arr[arr.length - 1], data);
+      const nextDate = nextPublishDate(arr[arr.length - 1], data, firstDate);
       if (!nextDate) break;
       arr.push(nextDate);
     }
