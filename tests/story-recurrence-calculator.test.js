@@ -83,6 +83,41 @@ describe('story-recurrence-calculator', () => {
     expect(formattedDates(result)).to.deep.equal(datesArr);
   });
 
+  it('monthly recurrence', () => {
+    const result = getRecurrenceDates('2022-05-26', {
+      scheduleType: 'MONTHLY'
+    });
+  
+    const datesArr = [
+      '2022-05-26',
+      '2022-06-25',
+      '2022-07-25',
+      '2022-08-24',
+      '2022-09-23',
+      '2022-10-23',
+      '2022-11-22',
+      '2022-12-22',
+      '2023-01-21',
+      '2023-02-20'
+    ];
+  
+    expect(formattedDates(result)).to.deep.equal(datesArr);
+  });
+
+  it('monthly recurrence with end date', () => {
+    const result = getRecurrenceDates('2022-05-26', {
+      scheduleType: 'MONTHLY',
+      endDate: '2022-07-01'
+    });
+
+    const datesArr = [
+      '2022-05-26',
+      '2022-06-25'
+    ];
+
+    expect(formattedDates(result)).to.deep.equal(datesArr);
+  });
+
   it('custom recurrence scheduled on specific week days - case 1', () => {
     const result = getRecurrenceDates('2022-05-26', {
       scheduleType: 'CUSTOM',
