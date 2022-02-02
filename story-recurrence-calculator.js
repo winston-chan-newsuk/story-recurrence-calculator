@@ -5,7 +5,7 @@ const weekOfMonth = (momentDate) => {
   return momentDate.week() - moment(momentDate).startOf('month').week() + 1;
 };
 
-const customRecurrence = (momentDate, data) => {
+const customRecurrence = (momentDate, data, firstDate) => {
   const customData = data.customRecurrence;
   if (!customData?.repeatEveryValue) {
     return null;
@@ -52,8 +52,15 @@ const customRecurrence = (momentDate, data) => {
       }
     } else if (customData.repeatOnEveryMonth === 'SPECIFIC_DAY') {
       for (let i = 1; i < maxValue; i++) {
-        const nextMonthDate = moment(arr[arr.length - 1]).add(1, 'month');
-        arr.push(nextMonthDate);
+        const daysOfFirstDate = firstDate.date();
+        let newDate = moment(arr[arr.length - 1]).add(1, 'month');
+        if (daysOfFirstDate > newDate.daysInMonth()) {
+          newDate = newDate.date(newDate.daysInMonth());
+        } else {
+          newDate = newDate.date(daysOfFirstDate);
+        }
+
+        arr.push(newDate);
       }
     }
     return arr;
@@ -100,7 +107,7 @@ const getRecurrenceDates = (dateStr, data) => {
       arr.push(nextDate);
     }
   } else {
-    arr = customRecurrence(arr[arr.length - 1], data) || [];
+    arr = customRecurrence(arr[arr.length - 1], data, firstDate) || [];
   }
 
   return arr;
