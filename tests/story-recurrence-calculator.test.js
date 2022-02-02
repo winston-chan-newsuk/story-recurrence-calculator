@@ -130,9 +130,9 @@ describe('story-recurrence-calculator', () => {
     const result = getRecurrenceDates('2022-05-26', {
       scheduleType: 'CUSTOM',
       customRecurrence: {
-        repeatEveryValue: 2,
-        repeatEveryOccasion: 'WEEK',
-        repeatOnEveryWeek: [0, 2, 4] // Sunday, Tuesday, and Thursday
+        recurrenceValue: 2,
+        recurrenceUnit: 'WEEK',
+        weeklyScheduleType: ['SUNDAY', 'TUESDAY', 'THURSDAY'] // Sunday, Tuesday, and Thursday
       }
     });
 
@@ -151,9 +151,9 @@ describe('story-recurrence-calculator', () => {
     const result = getRecurrenceDates('2022-05-26', {
       scheduleType: 'CUSTOM',
       customRecurrence: {
-        repeatEveryValue: 3,
-        repeatEveryOccasion: 'WEEK',
-        repeatOnEveryWeek: [1, 4, 5, 6] // Monday, Thursday, Friday, and Saturday
+        recurrenceValue: 3,
+        recurrenceUnit: 'WEEK',
+        weeklyScheduleType: ['MONDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'] // Monday, Thursday, Friday, and Saturday
       }
     });
 
@@ -175,9 +175,9 @@ describe('story-recurrence-calculator', () => {
     const result = getRecurrenceDates('2022-06-15', {
       scheduleType: 'CUSTOM',
       customRecurrence: {
-        repeatEveryValue: 20,
-        repeatEveryOccasion: 'MONTH',
-        repeatOnEveryMonth: 'SPECIFIC_WEEKDAY'
+        recurrenceValue: 20,
+        recurrenceUnit: 'MONTH',
+        monthlyScheduleType: 'SAME_WEEK'
       }
     });
 
@@ -200,9 +200,9 @@ describe('story-recurrence-calculator', () => {
     const result = getRecurrenceDates('2022-06-01', {
       scheduleType: 'CUSTOM',
       customRecurrence: {
-        repeatEveryValue: 20,
-        repeatEveryOccasion: 'MONTH',
-        repeatOnEveryMonth: 'SPECIFIC_WEEKDAY'
+        recurrenceValue: 20,
+        recurrenceUnit: 'MONTH',
+        monthlyScheduleType: 'SAME_WEEK'
       }
     });
 
@@ -225,9 +225,9 @@ describe('story-recurrence-calculator', () => {
     const result = getRecurrenceDates('2022-06-30', {
       scheduleType: 'CUSTOM',
       customRecurrence: {
-        repeatEveryValue: 20,
-        repeatEveryOccasion: 'MONTH',
-        repeatOnEveryMonth: 'SPECIFIC_WEEKDAY'
+        recurrenceValue: 20,
+        recurrenceUnit: 'MONTH',
+        monthlyScheduleType: 'SAME_WEEK'
       }
     });
 
@@ -250,9 +250,9 @@ describe('story-recurrence-calculator', () => {
     const result = getRecurrenceDates('2022-01-01', {
       scheduleType: 'CUSTOM',
       customRecurrence: {
-        repeatEveryValue: 20,
-        repeatEveryOccasion: 'MONTH',
-        repeatOnEveryMonth: 'SPECIFIC_DAY'
+        recurrenceValue: 20,
+        recurrenceUnit: 'MONTH',
+        monthlyScheduleType: 'SAME_DAY'
       }
     });
 
@@ -275,9 +275,9 @@ describe('story-recurrence-calculator', () => {
     const result = getRecurrenceDates('2022-01-31', {
       scheduleType: 'CUSTOM',
       customRecurrence: {
-        repeatEveryValue: 20,
-        repeatEveryOccasion: 'MONTH',
-        repeatOnEveryMonth: 'SPECIFIC_DAY'
+        recurrenceValue: 20,
+        recurrenceUnit: 'MONTH',
+        monthlyScheduleType: 'SAME_DAY'
       }
     });
 

@@ -1,5 +1,14 @@
 const moment = require('moment');
 const MAX_STORIES = 10;
+const WEEKDAY_ENUM = {
+  'MONDAY': 1,
+  'TUESDAY': 2,
+  'WEDNESDAY': 3,
+  'THURSDAY': 4,
+  'FRIDAY': 5,
+  'SATURDAY': 6,
+  'SUNDAY': 0
+};
 
 const weekOfMonth = (momentDate) => { 
   return momentDate.week() - moment(momentDate).startOf('month').week() + 1;
@@ -7,28 +16,28 @@ const weekOfMonth = (momentDate) => {
 
 const customRecurrence = (momentDate, data, firstDate) => {
   const customData = data.customRecurrence;
-  if (!customData?.repeatEveryValue) {
+  if (!customData?.recurrenceValue) {
     return null;
   }
 
   const newDate = moment(momentDate);
   let arr = [newDate];
-  if (customData.repeatEveryOccasion === 'WEEK') {
-    for (let i = 0; i < customData.repeatEveryValue; i++) {
+  if (customData.recurrenceUnit === 'WEEK') {
+    for (let i = 0; i < customData.recurrenceValue; i++) {
       let sundayDate = moment(arr[arr.length - 1]);
       sundayDate = sundayDate.day() !== 0 ? sundayDate.day(7) : sundayDate;
       // Next Sunday is Sunday or not
-      for (let j = 0; j < customData.repeatOnEveryWeek.length; j++) {
-        arr.push(moment(sundayDate).add(customData.repeatOnEveryWeek[j], 'days'));
+      for (let j = 0; j < customData.weeklyScheduleType.length; j++) {
+        arr.push(moment(sundayDate).add(WEEKDAY_ENUM[customData.weeklyScheduleType[j]], 'days'));
         if (arr.length === MAX_STORIES) {
           return arr;
         }
       }
     }
     return arr;
-  } else if (customData.repeatEveryOccasion === 'MONTH') {
-    const maxValue = customData.repeatEveryValue > MAX_STORIES ? MAX_STORIES : customData.repeatEveryValue;
-    if (customData.repeatOnEveryMonth === 'SPECIFIC_WEEKDAY') {
+  } else if (customData.recurrenceUnit === 'MONTH') {
+    const maxValue = customData.recurrenceValue > MAX_STORIES ? MAX_STORIES : customData.recurrenceValue;
+    if (customData.monthlyScheduleType === 'SAME_WEEK') {
       const weeks = weekOfMonth(arr[arr.length - 1]);
       const weekday = moment(arr[arr.length - 1]).day();
       for (let i = 1; i < maxValue; i++) {
@@ -50,7 +59,7 @@ const customRecurrence = (momentDate, data, firstDate) => {
         
         arr.push(nextMonthDate);
       }
-    } else if (customData.repeatOnEveryMonth === 'SPECIFIC_DAY') {
+    } else if (customData.monthlyScheduleType === 'SAME_DAY') {
       for (let i = 1; i < maxValue; i++) {
         const daysOfFirstDate = firstDate.date();
         let newDate = moment(arr[arr.length - 1]).add(1, 'month');
