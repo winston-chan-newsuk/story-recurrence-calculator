@@ -1,4 +1,5 @@
 const moment = require('moment');
+
 const MAX_STORIES = 10;
 const WEEKDAY_ENUM = {
   'MONDAY': 1,
@@ -10,7 +11,9 @@ const WEEKDAY_ENUM = {
   'SUNDAY': 0
 };
 
-const weekOfMonth = (momentDate) => { 
+const formattedDate = (momentDate) => momentDate.format('YYYY-MM-DD');
+
+const weekOfMonth = (momentDate) => {
   return momentDate.week() - moment(momentDate).startOf('month').week() + 1;
 };
 
@@ -42,9 +45,9 @@ const customRecurrence = (momentDate, data, firstDate) => {
       const weekday = moment(arr[arr.length - 1]).day();
       for (let i = 1; i < maxValue; i++) {
         let nextMonthDate = moment(arr[arr.length - 1]).add(1, 'month')
-                                                       .startOf('month');                      
+                                                       .startOf('month');
         let addWeeksToDate = moment(nextMonthDate).add(weeks, 'week');
-        
+
         if (nextMonthDate.month() !== addWeeksToDate.month()) {
           const endOfMonth = moment(nextMonthDate).endOf('month');
           const endOfMonthWeekday = endOfMonth.day();
@@ -56,7 +59,7 @@ const customRecurrence = (momentDate, data, firstDate) => {
         if (weeks === 1 && addWeeksToDate.date() > 7) {
           nextMonthDate = addWeeksToDate.subtract(7, 'days');
         }
-        
+
         arr.push(nextMonthDate);
       }
     } else if (customData.monthlyScheduleType === 'SAME_DAY') {
@@ -80,22 +83,18 @@ const customRecurrence = (momentDate, data, firstDate) => {
 
 const nextPublishDate = (momentDate, data, firstDate) => {
   let newDate;
-  switch (data.scheduleType) {
-    case 'DAILY':
-      newDate = moment(momentDate).add(1, 'days');
-      break;
-    case 'WEEKLY':
-      newDate = moment(momentDate).add(1, 'week');
-      break;
-    case 'MONTHLY':
-      const daysOfFirstDate = firstDate.date();
-      newDate = moment(momentDate).add(1, 'month');
-      if (daysOfFirstDate > newDate.daysInMonth()) {
-        newDate = newDate.date(newDate.daysInMonth());
-      } else {
-        newDate = newDate.date(daysOfFirstDate);
-      }
-      break;
+  if (data.scheduleType === 'DAILY') {
+    newDate = moment(momentDate).add(1, 'days');
+  } else if (data.scheduleType === 'WEEKLY') {
+    newDate = moment(momentDate).add(1, 'week');
+  } else if (data.scheduleType === 'MONTHLY') {
+    const daysOfFirstDate = firstDate.date();
+    newDate = moment(momentDate).add(1, 'month');
+    if (daysOfFirstDate > newDate.daysInMonth()) {
+      newDate = newDate.date(newDate.daysInMonth());
+    } else {
+      newDate = newDate.date(daysOfFirstDate);
+    }
   }
 
   if (data.endDate && newDate > moment(data.endDate)) {
@@ -105,8 +104,8 @@ const nextPublishDate = (momentDate, data, firstDate) => {
   return newDate;
 };
 
-const getRecurrenceDates = (dateStr, data) => {
-  const firstDate = moment(dateStr);
+const getRecurrenceDates = (data) => {
+  const firstDate = moment(data.startDate);
   let arr = [firstDate];
 
   if (data.scheduleType !== 'CUSTOM') {
@@ -119,9 +118,10 @@ const getRecurrenceDates = (dateStr, data) => {
     arr = customRecurrence(arr[arr.length - 1], data, firstDate) || [];
   }
 
-  return arr;
+  return arr.map(formattedDate);
 };
 
 module.exports = {
-  getRecurrenceDates
+  getRecurrenceDates,
+  formattedDate
 };

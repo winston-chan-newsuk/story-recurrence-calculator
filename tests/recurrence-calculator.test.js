@@ -1,15 +1,14 @@
-const { getRecurrenceDates } = require('../story-recurrence-calculator');
+const { getRecurrenceDates } = require('../recurrenceCalculator');
 const { expect } = require('chai');
 
-describe('story-recurrence-calculator', () => {
-  const formattedDates = (dates) => dates.map((date) => date.format('YYYY-MM-DD'));
-
+describe('recurrence-calculator', () => {
   it('daily recurrence', () => {
-    const result = getRecurrenceDates('2022-05-26', {
+    const result = getRecurrenceDates({
+      startDate: '2022-05-26',
       scheduleType: 'DAILY'
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-05-26',
       '2022-05-27',
       '2022-05-28',
@@ -24,12 +23,13 @@ describe('story-recurrence-calculator', () => {
   });
 
   it('daily recurrence with end date', () => {
-    const result = getRecurrenceDates('2022-05-26', {
-      scheduleType: 'DAILY',
-      endDate: '2022-06-01'
+    const result = getRecurrenceDates({
+      startDate: '2022-05-26',
+      endDate: '2022-06-01',
+      scheduleType: 'DAILY'
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-05-26',
       '2022-05-27',
       '2022-05-28',
@@ -41,11 +41,12 @@ describe('story-recurrence-calculator', () => {
   });
 
   it('weekly recurrence', () => {
-    const result = getRecurrenceDates('2022-05-26', {
+    const result = getRecurrenceDates({
+      startDate: '2022-05-26',
       scheduleType: 'WEEKLY'
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-05-26',
       '2022-06-02',
       '2022-06-09',
@@ -60,12 +61,13 @@ describe('story-recurrence-calculator', () => {
   });
 
   it('weekly recurrence with end date', () => {
-    const result = getRecurrenceDates('2022-05-26', {
-      scheduleType: 'WEEKLY',
-      endDate: '2022-07-01'
+    const result = getRecurrenceDates({
+      startDate: '2022-05-26',
+      endDate: '2022-07-01',
+      scheduleType: 'WEEKLY'
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-05-26',
       '2022-06-02',
       '2022-06-09',
@@ -76,11 +78,12 @@ describe('story-recurrence-calculator', () => {
   });
 
   it('monthly recurrence', () => {
-    const result = getRecurrenceDates('2022-05-26', {
+    const result = getRecurrenceDates({
+      startDate: '2022-05-26',
       scheduleType: 'MONTHLY'
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-05-26',
       '2022-06-26',
       '2022-07-26',
@@ -95,12 +98,13 @@ describe('story-recurrence-calculator', () => {
   });
 
   it('monthly recurrence with end date - case 1', () => {
-    const result = getRecurrenceDates('2022-05-26', {
-      scheduleType: 'MONTHLY',
-      endDate: '2022-07-01'
+    const result = getRecurrenceDates({
+      startDate: '2022-05-26',
+      endDate: '2022-07-01',
+      scheduleType: 'MONTHLY'
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-05-26',
       '2022-06-26'
     ]);
@@ -108,11 +112,12 @@ describe('story-recurrence-calculator', () => {
 
   it('monthly recurrence with end date - case 2', () => {
     // At the end of the month
-    const result = getRecurrenceDates('2022-01-31', {
+    const result = getRecurrenceDates({
+      startDate: '2022-01-31',
       scheduleType: 'MONTHLY'
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-01-31',
       '2022-02-28',
       '2022-03-31',
@@ -128,11 +133,12 @@ describe('story-recurrence-calculator', () => {
 
   it('monthly recurrence with end date - case 3', () => {
     // At the end of the month (2024 is a Leap Year)
-    const result = getRecurrenceDates('2024-01-31', {
+    const result = getRecurrenceDates({
+      startDate: '2024-01-31',
       scheduleType: 'MONTHLY'
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2024-01-31',
       '2024-02-29',
       '2024-03-31',
@@ -147,7 +153,8 @@ describe('story-recurrence-calculator', () => {
   });
 
   it('custom recurrence scheduled on specific week days - case 1', () => {
-    const result = getRecurrenceDates('2022-05-26', {
+    const result = getRecurrenceDates({
+      startDate: '2022-05-26',
       scheduleType: 'CUSTOM',
       customRecurrence: {
         recurrenceValue: 2,
@@ -156,7 +163,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-05-26',
       '2022-05-29',
       '2022-05-31',
@@ -168,7 +175,8 @@ describe('story-recurrence-calculator', () => {
   });
 
   it('custom recurrence scheduled on specific week days - case 2', () => {
-    const result = getRecurrenceDates('2022-05-26', {
+    const result = getRecurrenceDates({
+      startDate: '2022-05-26',
       scheduleType: 'CUSTOM',
       customRecurrence: {
         recurrenceValue: 3,
@@ -177,7 +185,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-05-26',
       '2022-05-30',
       '2022-06-02',
@@ -192,7 +200,8 @@ describe('story-recurrence-calculator', () => {
   });
 
   it('custom recurrence scheduled on every month on specific weekday - case 1', () => {
-    const result = getRecurrenceDates('2022-06-15', {
+    const result = getRecurrenceDates({
+      startDate: '2022-06-15',
       scheduleType: 'CUSTOM',
       customRecurrence: {
         recurrenceValue: 20,
@@ -201,7 +210,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-06-15',
       '2022-07-20',
       '2022-08-24',
@@ -217,7 +226,8 @@ describe('story-recurrence-calculator', () => {
 
   it('custom recurrence scheduled on every month on specific weekday - case 2', () => {
     // Start from beginning of the month
-    const result = getRecurrenceDates('2022-06-01', {
+    const result = getRecurrenceDates({
+      startDate: '2022-06-01',
       scheduleType: 'CUSTOM',
       customRecurrence: {
         recurrenceValue: 20,
@@ -226,7 +236,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-06-01',
       '2022-07-06',
       '2022-08-03',
@@ -242,7 +252,8 @@ describe('story-recurrence-calculator', () => {
 
   it('custom recurrence scheduled on every month on specific weekday - case 3', () => {
     // Start from end of the month
-    const result = getRecurrenceDates('2022-06-30', {
+    const result = getRecurrenceDates({
+      startDate: '2022-06-30',
       scheduleType: 'CUSTOM',
       customRecurrence: {
         recurrenceValue: 20,
@@ -251,7 +262,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-06-30',
       '2022-07-28',
       '2022-08-25',
@@ -267,7 +278,8 @@ describe('story-recurrence-calculator', () => {
 
   it('custom recurrence scheduled on every month on specific day - case 1', () => {
     // Start from beginning of the month
-    const result = getRecurrenceDates('2022-01-01', {
+    const result = getRecurrenceDates({
+      startDate: '2022-01-01',
       scheduleType: 'CUSTOM',
       customRecurrence: {
         recurrenceValue: 20,
@@ -276,7 +288,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-01-01',
       '2022-02-01',
       '2022-03-01',
@@ -292,7 +304,8 @@ describe('story-recurrence-calculator', () => {
 
   it('custom recurrence scheduled on every month on specific day - case 2', () => {
     // Start from end of the month
-    const result = getRecurrenceDates('2022-01-31', {
+    const result = getRecurrenceDates({
+      startDate: '2022-01-31',
       scheduleType: 'CUSTOM',
       customRecurrence: {
         recurrenceValue: 20,
@@ -301,7 +314,7 @@ describe('story-recurrence-calculator', () => {
       }
     });
 
-    expect(formattedDates(result)).to.deep.equal([
+    expect(result).to.deep.equal([
       '2022-01-31',
       '2022-02-28',
       '2022-03-31',
